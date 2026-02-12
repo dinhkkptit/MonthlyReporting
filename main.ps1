@@ -16,10 +16,10 @@
 #                                                                                                         #
 # Last edited:   08.05.2012                                                                               #
 #                                                                                                         #
-# Requirements:  Microsoft Windows PowerShell 2.0 + VMware PowerCLI 5.0.1                                 #
+# Requirements:  Windows PowerShell 5.1 (Windows Server 2019) + VMware PowerCLI 13+                                 #
 #                                                                                                         #
 # Usage:                                                                                                  #
-#  PowerShell -PSConsoleFile "C:\{Path2PowerCLI}\vim.psc1" -command C:\{Path2Script}\main.ps1             #
+#  PowerShell -NoProfile -ExecutionPolicy Bypass -File C:\{Path2Script}\main.ps1             #
 #                                                                                                         #
 # Parameters:                                                                                             #
 #  1. '-vCenter'     vCenter Server Wildcard (smv, cvc, pvc, svc, tvc, iaas, ...)                         #
@@ -30,8 +30,8 @@
 #  6. '-dontTidy'    do not tidy up outdated files and folders                                            #
 #                                                                                                         #
 # Usage example:                                                                                          #
-#  PowerShell -PSConsoleFile "C:\Programme\VMware\Infrastructure\vSphere PowerCLI\vim.psc1" `             #
-#             -command "C:\monthlyReporting\main.ps1 -vCenter iaas -reportType machines"                  #
+#  PowerShell -NoProfile -ExecutionPolicy Bypass `                                                    #
+#             -File "C:\monthlyReporting\main.ps1" -vCenter iaas -reportType machines           #
 #             -->> fetches information of virtual machines from all (4) iaas vcenter servers              #
 #                                                                                                         #
 #                    This program is distributed in the hope that it will be useful,                      #
@@ -61,7 +61,7 @@ Write-Host "$($MyInvocation.Line) started at $startTime"
 # Read configuration file:
 # ------------------------
 $confTable = readConfiguration
-
+initializePowerCLI
 
 
 # Do the work:
