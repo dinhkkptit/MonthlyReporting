@@ -9,14 +9,14 @@
 #                                                                                                         #
 # Last edited:   08.11.2013                                                                               #
 #                                                                                                         #
-# Requirements:  Microsoft Windows PowerShell 2.0 + VMware PowerCLI 5.0.1                                 #
+# Requirements:  Windows PowerShell 5.1 (Windows Server 2019) + VMware PowerCLI 13+                                 #
 #                                                                                                         #
 # Usage:                                                                                                  #
-#  PowerShell -PSConsoleFile "C:\{Path2PowerCLI}\vim.psc1" -command C:\{Path2Script}\fetchMachines.ps1    #
+#  PowerShell -NoProfile -ExecutionPolicy Bypass -File C:\{Path2Script}\fetchMachines.ps1    #
 #                                                                                                         #
 # Usage example:                                                                                          #
-#  PowerShell -PSConsoleFile "C:\Programme\VMware\Infrastructure\vSphere PowerCLI\vim.psc1" `             #
-#             -command "C:\monthlyReporting\fetchMachines.ps1"                                            #
+#  PowerShell -NoProfile -ExecutionPolicy Bypass `             #
+#             -File "C:\monthlyReporting\fetchMachines.ps1"                                            #
 #                                                                                                         #
 #                    This program is distributed in the hope that it will be useful,                      #
 #                    but WITHOUT ANY WARRANTY; without even the implied warranty of                       #
@@ -81,7 +81,7 @@ ForEach( $vm in Get-VM|Sort Name )
 	$row.State =		$vm.PowerState
 	$row.Status =		$summary.OverallStatus
 	$row.Host =		$vm.VMHost
-	$row.GuestOS =		$guest.GuestFullName			#doesn´t get powered-off
+	$row.GuestOS =		$guest.GuestFullName			#doesnt get powered-off
 	IF( !$guest.GuestFullName )
 	{
 		$row.GuestOS =	$config.GuestFullName			#gets powered-off

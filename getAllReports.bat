@@ -33,7 +33,6 @@ REM Read configuration file:
 REM ------------------------
 FOR /f %%c IN ('dir /b *.ini') DO (
 	FOR /f "tokens=1,2 delims==" %%a IN (%%c) DO (
-		IF %%a==psConsoleFile SET psConsoleFile=%%b
 		IF %%a==installPath SET installPath=%%b
 		IF %%a==logsDir SET logsDir=%%b
 		IF %%a==mainRoutineFile SET mainRoutineFile=%%b
@@ -59,8 +58,8 @@ echo # Starting main routine at %date% %time% # >> "%logfile%" 2>&1
 echo ################################################### >> "%logfile%" 2>&1
 echo . >> "%logfile%" 2>&1
 REM Logging prevents from sending log file, so step one for fetching, step two for sending
-PowerShell -PSConsoleFile "%psConsoleFile%" -command "%installPath%\%mainRoutineFile% -dontSend" >> "%logfile%" 2>&1
-PowerShell -PSConsoleFile "%psConsoleFile%" -command "%installPath%\%mainRoutineFile% -onlySend"
+PowerShell -NoProfile -ExecutionPolicy Bypass -File "%installPath%\%mainRoutineFile%" -dontSend >> "%logfile%" 2>&1
+PowerShell -NoProfile -ExecutionPolicy Bypass -File "%installPath%\%mainRoutineFile%" -onlySend
 echo . >> "%logfile%" 2>&1
 echo ################################################### >> "%logfile%" 2>&1
 echo # Main routine finished at %date% %time% # >> "%logfile%" 2>&1

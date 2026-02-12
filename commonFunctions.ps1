@@ -8,7 +8,7 @@
 #                                                                                                         #
 # Last edited:   08.05.2012                                                                               #
 #                                                                                                         #
-# Requirements:  Microsoft Windows PowerShell 2.0 + VMware PowerCLI 5.0.1                                 #
+# Requirements:  Windows PowerShell 5.1 (Windows Server 2019) + VMware PowerCLI 13+                                 #
 #                                                                                                         #
 # Usage:                                                                                                  #
 #         This file must be dot sourced from another script file, then the functions are available        #
@@ -72,12 +72,42 @@ Function readConfiguration( $configurationFile=$(getConfigurationFile) )
 	return $configurationTable
 }
 
+
+
+# Initialize PowerCLI for module-based installations:
+# ----------------------------------------------------
+Function initializePowerCLI()
+{
+	IF( Get-Module -Name VMware.VimAutomation.Core )
+	{
+		return
+	}
+
+	Write-Host "Initializing VMware PowerCLI ..." -NoNewLine
+	try
+	{
+		Import-Module -Name VMware.PowerCLI -ErrorAction Stop
+		$installedPowerCLIVersion = (Get-Module -Name VMware.PowerCLI).Version
+		Write-Host " v$installedPowerCLIVersion" -NoNewLine
+		Set-PowerCLIConfiguration -Scope Session -ParticipateInCeip:$false -Confirm:$false >$null
+		Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false >$null
+	}
+	catch
+	{
+		Write-Host -ForegroundColor Red "failed"
+		Write-Host "Error initializing VMware PowerCLI. Please install/update the VMware.PowerCLI module."
+		exit -1
+	}
+	Write-Host -ForegroundColor Green " OK"
+}
+
 # Read connection credentials:
 # ----------------------------
 Function readCredentials( [Parameter(Mandatory=$true)]$credentialFile )
 {
 	IF( Test-Path $credentialFile )
 	{
+		initializePowerCLI
 		Write-Host "Loading credentials from $credentialFile ..." -noNewLine
 		try
 		{
@@ -107,8 +137,7 @@ Function connect2Server( [Parameter(Mandatory=$true)]$credentials )
 	{
 		$serverName = $($credentials.Host.ToString())
 		Write-Host "Connecting to $serverName ..." -noNewLine
-		# Disable certificate warnings - they always come up and get logged
-		Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false >$null
+		initializePowerCLI
 		try
 		{
 			$connectedServer = Connect-VIServer -Server $credentials.Host `
