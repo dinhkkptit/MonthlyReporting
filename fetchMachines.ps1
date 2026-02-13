@@ -166,7 +166,7 @@ $outfile = "$aktReportDir\VMsList_" + $($server.Name) + "_" + $date + ".csv"
 
 # Export statuslist as csv-file:
 # ------------------------------
-$list | Export-Csv "$outfile" -noTypeInformation -Delimiter ";"
+$list | Export-Csv "$outfile" -noTypeInformation
 Write-Host ""
 Write-Host "Saved list in $outfile"
 
