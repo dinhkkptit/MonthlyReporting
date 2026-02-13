@@ -11,6 +11,7 @@
 #                - virtual machines and to which networks they are connected                              #
 #                - virtual machine hosts and to which networks they are connected                         #
 #                - installed virtual machine templates                                                    #
+#                - administrative and security-related vCenter reports                                    #
 #                                                                                                         #
 # Author:        Sven Sperner <cethss@gmail.com>                                                          #
 #                                                                                                         #
@@ -23,7 +24,7 @@
 #                                                                                                         #
 # Parameters:                                                                                             #
 #  1. '-vCenter'     vCenter Server Wildcard (smv, cvc, pvc, svc, tvc, iaas, ...)                         #
-#  2. '-reportType'  report Type (datastores, hosts, machines, networks, templates)                       #
+#  2. '-reportType'  report Type (datastores, hosts, machines, networks, templates, admin)                #
 #  3. '-onlySend'    only send actual (from today) report list(s)                                         #
 #  4. '-onlyTidy'    only tidy up outdated report files and folders                                       #
 #  5. '-dontSend'    do not send report mails                                                             #
@@ -92,12 +93,13 @@ IF( !$onlySend -and !$onlyTidy )
 	# -------------------------------------
 	SWITCH( $reportType )
 	{
-		"Datastores"	{$datastores=$true; $hosts=$false;$machines=$false;$networks=$false;$templates=$false}
-		"Hosts"		{$datastores=$false;$hosts=$true; $machines=$false;$networks=$false;$templates=$false}
-		"Machines"	{$datastores=$false;$hosts=$false;$machines=$true; $networks=$false;$templates=$false}
-		"Networks"	{$datastores=$false;$hosts=$false;$machines=$false;$networks=$true; $templates=$false}
-		"Templates"	{$datastores=$false;$hosts=$false;$machines=$false;$networks=$false;$templates=$true}
-		default		{$datastores=$true; $hosts=$true; $machines=$true; $networks=$true; $templates=$true}
+		"Datastores"	{$datastores=$true; $hosts=$false;$machines=$false;$networks=$false;$templates=$false;$admin=$false}
+		"Hosts"		{$datastores=$false;$hosts=$true; $machines=$false;$networks=$false;$templates=$false;$admin=$false}
+		"Machines"	{$datastores=$false;$hosts=$false;$machines=$true; $networks=$false;$templates=$false;$admin=$false}
+		"Networks"	{$datastores=$false;$hosts=$false;$machines=$false;$networks=$true; $templates=$false;$admin=$false}
+		"Templates"	{$datastores=$false;$hosts=$false;$machines=$false;$networks=$false;$templates=$true;$admin=$false}
+		"Admin"	{$datastores=$false;$hosts=$false;$machines=$false;$networks=$false;$templates=$false;$admin=$true}
+		default		{$datastores=$true; $hosts=$true; $machines=$true; $networks=$true; $templates=$true;$admin=$true}
 	}
 
 
@@ -115,6 +117,7 @@ IF( !$onlySend -and !$onlyTidy )
 		IF( $machines )		{	.\fetchMachines.ps1	}
 		IF( $networks )		{	.\fetchNetworks.ps1	}
 		IF( $templates )	{	.\fetchTemplates.ps1	}
+		IF( $admin )		{	.\fetchAdmin.ps1	}
 		disconnectFromServer $server
 		$aktServer++
 	}
