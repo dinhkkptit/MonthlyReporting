@@ -252,9 +252,9 @@ $netHostFile = "$aktReportDir\NetHostList_" + $($server.Name) + "_" + $date + ".
 
 # Export statuslists as csv-file:
 # -------------------------------
-$networksList | Export-Csv "$networksFile" -noTypeInformation -Delimiter ";"
-$netSpreadList | Export-Csv "$netSpreadFile" -noTypeInformation -Delimiter ";"
-$netHostList | Export-Csv "$netHostFile" -noTypeInformation -Delimiter ";"
+$networksList | Export-Csv "$networksFile" -noTypeInformation
+$netSpreadList | Export-Csv "$netSpreadFile" -noTypeInformation
+$netHostList | Export-Csv "$netHostFile" -noTypeInformation
 Write-Host ""
 Write-Host "Saved networks list in $networksFile"
 Write-Host "Saved net spread list in $netSpreadFile"

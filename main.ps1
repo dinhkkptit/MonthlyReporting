@@ -13,9 +13,9 @@
 #                - installed virtual machine templates                                                    #
 #                - administrative and security-related vCenter reports                                    #
 #                                                                                                         #
-# Author:        Sven Sperner <cethss@gmail.com>                                                          #
+# Author:        nguyen van dinh <dinhkkptit@gmail.com>                                                   #
 #                                                                                                         #
-# Last edited:   08.05.2012                                                                               #
+# Last edited:   13.02.2026                                                                               #
 #                                                                                                         #
 # Requirements:  Windows PowerShell 5.1 (Windows Server 2019) + VMware PowerCLI 13+                                 #
 #                                                                                                         #

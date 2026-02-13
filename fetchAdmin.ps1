@@ -63,7 +63,7 @@ ForEach( $vmHost in (Get-VMHost | Sort-Object Name) )
 	}
 }
 $sshOutfile = "$aktReportDir\AdminSshStatus_$serverName`_$timestamp.csv"
-$hostSshRows | Export-Csv "$sshOutfile" -NoTypeInformation -Delimiter ";"
+$hostSshRows | Export-Csv "$sshOutfile" -NoTypeInformation
 Write-Host "Saved SSH host status in $sshOutfile"
 
 
@@ -78,7 +78,7 @@ ForEach( $cluster in (Get-Cluster | Sort-Object Name) )
 	$clusterVmRows += $row
 }
 $clusterCountOutfile = "$aktReportDir\AdminClusterVmCount_$serverName`_$timestamp.csv"
-$clusterVmRows | Export-Csv "$clusterCountOutfile" -NoTypeInformation -Delimiter ";"
+$clusterVmRows | Export-Csv "$clusterCountOutfile" -NoTypeInformation
 Write-Host "Saved VM count per cluster in $clusterCountOutfile"
 
 
@@ -101,7 +101,7 @@ ForEach( $cluster in (Get-Cluster | Sort-Object Name) )
 	}
 }
 $largestOutfile = "$aktReportDir\AdminLargestVmsPerCluster_$serverName`_$timestamp.csv"
-$largestVmRows | Export-Csv "$largestOutfile" -NoTypeInformation -Delimiter ";"
+$largestVmRows | Export-Csv "$largestOutfile" -NoTypeInformation
 Write-Host "Saved largest VMs per cluster in $largestOutfile"
 
 
@@ -122,7 +122,7 @@ ForEach( $session in $activeSessions )
 	$sessionRows += $row
 }
 $sessionsOutfile = "$aktReportDir\AdminLoggedInUsers_$serverName`_$timestamp.csv"
-$sessionRows | Export-Csv "$sessionsOutfile" -NoTypeInformation -Delimiter ";"
+$sessionRows | Export-Csv "$sessionsOutfile" -NoTypeInformation
 Write-Host "Saved logged-in user sessions in $sessionsOutfile"
 
 
@@ -166,7 +166,7 @@ ForEach( $session in $activeSessions )
 	$disconnectRows += $row
 }
 $disconnectOutfile = "$aktReportDir\AdminDisconnectedIdleUsers_$serverName`_$timestamp.csv"
-$disconnectRows | Export-Csv "$disconnectOutfile" -NoTypeInformation -Delimiter ";"
+$disconnectRows | Export-Csv "$disconnectOutfile" -NoTypeInformation
 Write-Host "Saved idle session disconnect report in $disconnectOutfile"
 
 
@@ -185,7 +185,7 @@ ForEach( $snapshot in (Get-VM | Get-Snapshot | Sort-Object VM, Created) )
 	$snapshotRows += $row
 }
 $snapshotOutfile = "$aktReportDir\AdminVmsWithSnapshots_$serverName`_$timestamp.csv"
-$snapshotRows | Export-Csv "$snapshotOutfile" -NoTypeInformation -Delimiter ";"
+$snapshotRows | Export-Csv "$snapshotOutfile" -NoTypeInformation
 Write-Host "Saved VM snapshot report in $snapshotOutfile"
 
 

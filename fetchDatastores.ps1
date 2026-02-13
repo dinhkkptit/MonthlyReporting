@@ -193,8 +193,8 @@ $driveSpreadsFile = "$aktReportDir\DriveSpreadList_" + $($server.Name) + "_" + $
 
 # Export statuslists as csv-file:
 # -------------------------------
-$datastoresList | Export-Csv "$datastoresFile" -noTypeInformation -Delimiter ";"
-$driveSpreadList | Export-Csv "$driveSpreadsFile" -noTypeInformation -Delimiter ";"
+$datastoresList | Export-Csv "$datastoresFile" -noTypeInformation
+$driveSpreadList | Export-Csv "$driveSpreadsFile" -noTypeInformation
 Write-Host ""
 Write-Host "Saved datastores list in $datastoresFile"
 Write-Host "Saved drive spread list in $driveSpreadsFile"
