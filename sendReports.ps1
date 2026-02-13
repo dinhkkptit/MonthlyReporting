@@ -68,6 +68,12 @@ $bodyVirt += "VirtualMachine-Summaries (VMsList_{vCenter}_{Date}.summary.txt)<br
 $bodyTemp  = "Templates (TemplatesList_{vCenter}_{Date}.csv)<br/>"
 $bodyTemp += "Template-Summaries (TemplatesList_{vCenter}_{Date}.summary.txt)<br/>"
 $bodyHost  = "VM-Hosts (HostsList_{vCenter}_{Date}.csv)<br/>"
+$bodyAdmin = "Admin SSH status/actions (AdminSshStatus_{vCenter}_{Date}.csv)<br/>"
+$bodyAdmin += "VM count per cluster (AdminClusterVmCount_{vCenter}_{Date}.csv)<br/>"
+$bodyAdmin += "10 largest VMs per cluster (AdminLargestVmsPerCluster_{vCenter}_{Date}.csv)<br/>"
+$bodyAdmin += "Logged in users (AdminLoggedInUsers_{vCenter}_{Date}.csv)<br/>"
+$bodyAdmin += "Idle user disconnect actions (AdminDisconnectedIdleUsers_{vCenter}_{Date}.csv)<br/>"
+$bodyAdmin += "VMs with snapshots (AdminVmsWithSnapshots_{vCenter}_{Date}.csv)<br/>"
 $bodyData  = "Datastores (DatastoreList_{vCenter}_{Date}.csv)<br/>"
 $bodyData += "Datastoreusage of VMs (DriveSpreadList_{vCenter}_{Date}.csv)<br/>"
 $bodyNetw  = "Networks (NetworksList_{vCenter}_{Date}.csv)<br/>"
@@ -104,6 +110,7 @@ $attachReports += @(Get-ChildItem "$installPath\$reportDir\VMsList_iaas-p*")
 $attachReports += @(Get-ChildItem "$installPath\$reportDir\VMsList_iaas-s*")
 $attachReports += @(Get-ChildItem "$installPath\$reportDir\VMsList_iaas-t*")
 $attachTemplates = @(Get-ChildItem "$installPath\$reportDir\Temp*")
+$attachAdmin = @(Get-ChildItem "$installPath\$reportDir\Admin*")
 $attachDatastores = @(Get-ChildItem "$installPath\$reportDir\D*")
 $attachNetworks = @(Get-ChildItem "$installPath\$reportDir\N*")
 
@@ -115,7 +122,7 @@ $mailServer = "$($confTable["Mail"]["server"])"
 $mailFrom = "$($confTable["Mail"]["from"])"
 
 # With everything attached
-$body = $bodyHead + $bodyVirt +$bodyTemp + $bodyData + $bodyNetw + $bodyHost + $bodyTail
+$body = $bodyHead + $bodyVirt +$bodyTemp + $bodyData + $bodyNetw + $bodyHost + $bodyAdmin + $bodyTail
 ForEach( $recipient in $($confTable["Recipient-All"].Values) )
 {
 	Send-MailMessage -To		"Reporter <$recipient>" `
@@ -203,6 +210,19 @@ ForEach( $recipient in $($confTable["Recipient-Networks"].Values) )
 			 -SmtpServer	"$mailServer" `
 			 -Attachments	( $attachNetworks )
 	Write-Host "Sent mail with attached informations of networks to $recipient via $mailServer"
+}
+
+# With admin-lists attached
+$body = $bodyHead + $bodyAdmin + $bodyTail
+ForEach( $recipient in $($confTable["Recipient-Admin"].Values) )
+{
+	Send-MailMessage -To		"Reporter <$recipient>" `
+			 -From		"$mailFrom" `
+			 -Subject	"IAAS-Report of $date - Admin status lists" `
+			 -BodyAsHtml	"$body" `
+			 -SmtpServer	"$mailServer" `
+			 -Attachments	( $attachAdmin )
+	Write-Host "Sent mail with attached admin informations to $recipient via $mailServer"
 }
 
 
